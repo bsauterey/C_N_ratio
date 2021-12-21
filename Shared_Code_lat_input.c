@@ -79,23 +79,23 @@ int main(int argc, char *argv[])
 	fclose(ABUNDANCEZ);
 
 	//Code parameters
-	int     i;                    	     //Indexes
+	int     i;                           //Indexes
 	int     i2;                          //
-	int     j;                   	       //
-	int     k;                 	         //
+	int     j;                           //
+	int     k;                           //
 
-	int     Sres     = 200;       	     //Number of size-classes
-	int     Spaceres = 1;         	     //Number of patches
-	double  sizep[Sres];          	     //Phytoplankton size classes
-	double  sizez[Sres];           	     //Zooplankton size classes
+	int     Sres     = 200;              //Number of size-classes
+	int     Spaceres = 1;                //Number of patches
+	double  sizep[Sres];                 //Phytoplankton size classes
+	double  sizez[Sres];                 //Zooplankton size classes
 
 	double 	t;
 	double  time   = 10000;              //Max time
-	double  deltat = 0.01;       	       //Time step
-	double  deltat_ad;            	     //Adaptive time step
-	double  minNP;                 	     //Variable with the lowest X/dX
-	int     ti     = 0;            	     //Keeps track of the number of time steps
-	int     out    = 400;  	  	         //Number of time steps in outputs
+	double  deltat = 0.01;               //Time step
+	double  deltat_ad;                   //Adaptive time step
+	double  minNP;                       //Variable with the lowest X/dX
+	int     ti     = 0;                  //Keeps track of the number of time steps
+	int     out    = 400;                //Number of time steps in outputs
 	double  prompt = time/out;           //Tracks when to write outputs
 	int     t_temp = 0;                  //Time ratchet to signal output writing
 	double  dt     = 0.01;               //Alternative time step (keeping both is not necessary in that version of the code)
@@ -110,43 +110,43 @@ int main(int argc, char *argv[])
 	//Environmental and Biological parameters
 	double  lat[Spaceres];               //Latitudinal transect
 	double  T[Spaceres];                 //Temperature
-	double  Tref = 18;           	       //Reference temperature from Marañon et al 2013
-	double  N0[Spaceres];        	       //Spatial gradient of nutrient inputT
-	double  muzmax[Sres];        	       //Max attack rate of zooplankton
+	double  Tref = 18;                   //Reference temperature from Marañon et al 2013
+	double  N0[Spaceres];                //Spatial gradient of nutrient inputT
+	double  muzmax[Sres];                //Max attack rate of zooplankton
 	double **Vmax = malloc(Sres*out * sizeof *Vmax);  //Max uptake rate
 	for (i = 0; i < Sres*out; i++){Vmax[i] = malloc(Spaceres * sizeof *Vmax[i]);}
-	double  K[Sres];             	       //Half-saturation constant for photosynthesis
-	double  Qmin[Sres];          	       //Min internal quota of nutrient
+	double  K[Sres];                     //Half-saturation constant for photosynthesis
+	double  Qmin[Sres];                  //Min internal quota of nutrient
 	double **mu = malloc(Sres*out * sizeof *mu);  //Max growth rate
 	for (i = 0; i < Sres*out; i++){mu[i] = malloc(Spaceres * sizeof *mu[i]);}
 	double **mumax = malloc(Sres*out * sizeof *mumax);  //Composite max growth rate of phytoplankton when solving the equilibrium of the internal nutrient quota
 	for (i = 0; i < Sres*out; i++){mumax[i] = malloc(Spaceres * sizeof *mumax[i]);}
 	double **Kn = malloc(Sres*out * sizeof *Kn);  //Composite half-saturation constant of phytoplankton when solving the equilibrium of the internal nutrient quota
 	for (i = 0; i < Sres*out; i++){Kn[i] = malloc(Spaceres * sizeof *Kn[i]);}
-	double  Kg;                  	       //Half-saturation constant for Zooplankton
-	double  mortp;                		   //Phytoplankton mortality rate
-	double  mortz;                		   //Zooplankton mortality rate
+	double  Kg;                          //Half-saturation constant for Zooplankton
+	double  mortp;                       //Phytoplankton mortality rate
+	double  mortz;                       //Zooplankton mortality rate
 
 	double  Di;                           //Dilution rate of the chemostat model (I in the manuscript)
-	double  stp;                  		    //Size evolutionary diffusion constant
-	double  Spacetp;             		      //Spatial diffusion constant
+	double  stp;                          //Size evolutionary diffusion constant
+	double  Spacetp;                      //Spatial diffusion constant
 	double **predprey = malloc(Sres*out * sizeof *predprey);  //Size ratio matrix
 	for (i = 0; i < Sres*out; i++){predprey[i] = malloc(Sres * sizeof *predprey[i]);}
-	double  difterm;             		      //Evolutionary diffusion term
-	double  Sdifterm;             		    //Spatial diffusion term for biological populations
-	double  Ndifterm;              		    //Spatial diffusion term for nutrients (not in the original code)
+	double  difterm;                      //Evolutionary diffusion term
+	double  Sdifterm;                     //Spatial diffusion term for biological populations
+	double  Ndifterm;                     //Spatial diffusion term for nutrients (not in the original code)
 
 	double **pref = malloc(Sres*out * sizeof *pref);  //Size-based grazing kernel
 	for (i = 0; i < Sres*out; i++){pref[i] = malloc(Sres * sizeof *pref[i]);}
 	double  conso;                        //Total nutrient consumption of the local phytoplankton community
-	double  sum_graz[Sres];        		    //Total prey availability for a specific zooplankton size-class (in a given patch)
-	double  graz_eff[Sres];        		    //Total grazing effort of a specific zooplankton size-class (in a given patch)
+	double  sum_graz[Sres];               //Total prey availability for a specific zooplankton size-class (in a given patch)
+	double  graz_eff[Sres];               //Total grazing effort of a specific zooplankton size-class (in a given patch)
 	double **graz_mat = malloc(Sres*out * sizeof *graz_mat);  //Grazing matrix
 	for (i = 0; i < Sres*out; i++){graz_mat[i] = malloc(Sres * sizeof *graz_mat[i]);}
-	double  consoz;                		    //Loss term for a phytoplankton size-class due to grazing
-	double  consop;                		    //Growth term for a zooplankton size-class from grazing
+	double  consoz;                       //Loss term for a phytoplankton size-class due to grazing
+	double  consop;                       //Growth term for a zooplankton size-class from grazing
 
-	double  dN[Spaceres];          		  //Derivative for nutrient
+	double  dN[Spaceres];                //Derivative for nutrient
 	double **dP = malloc(Sres*out * sizeof *dP);  //Derivative for phytoplankton abundances
 	for (i = 0; i < Sres*out; i++){dP[i] = malloc(Spaceres * sizeof *dP[i]);}
 	double **dZ = malloc(Sres*out * sizeof *dZ);  //Derivative for zooplankton abundances*/
