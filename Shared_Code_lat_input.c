@@ -79,8 +79,8 @@ int main(int argc, char *argv[])
 	fclose(ABUNDANCEZ);
 
 	//Code parameters
-	int 	  i;                    	     //Indexes
-	int     i2;                     	   //
+	int     i;                    	     //Indexes
+	int     i2;                          //
 	int     j;                   	       //
 	int     k;                 	         //
 
@@ -90,15 +90,15 @@ int main(int argc, char *argv[])
 	double  sizez[Sres];           	     //Zooplankton size classes
 
 	double 	t;
-	double  time   = 10000;         	   //Max time
+	double  time   = 10000;              //Max time
 	double  deltat = 0.01;       	       //Time step
 	double  deltat_ad;            	     //Adaptive time step
 	double  minNP;                 	     //Variable with the lowest X/dX
 	int     ti     = 0;            	     //Keeps track of the number of time steps
-	int     out    = 400;  	  	    	   //Number of time steps in outputs
-	double  prompt = time/out;      	   //Tracks when to write outputs
-	int     t_temp = 0;             	   //Time ratchet to signal output writing
-	double  dt     = 0.01;            	 //Alternative time step (keeping both is not necessary in that version of the code)
+	int     out    = 400;  	  	         //Number of time steps in outputs
+	double  prompt = time/out;           //Tracks when to write outputs
+	int     t_temp = 0;                  //Time ratchet to signal output writing
+	double  dt     = 0.01;               //Alternative time step (keeping both is not necessary in that version of the code)
 
 	//State variable
 	double   N[Spaceres];                       //Nutrient concentration
