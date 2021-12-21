@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
 	double **dZ = malloc(Sres*out * sizeof *dZ);  //Derivative for zooplankton abundances*/
 	for (i = 0; i < Sres*out; i++){dZ[i] = malloc(Spaceres * sizeof *dZ[i]);}
 
-//DEBUG
+	//DEBUG
 	unsigned int    i_min = 0;
 	unsigned int    j_min = 0;
 
