@@ -193,7 +193,8 @@ int main(int argc, char *argv[])
 
 	for(i=0; i<Sres; i++) /* Physiological parameter for phytos and zoos */
 	{
-		Qmin[i]   = 0.14*pow(sizep[i],-0.04);                     //Marañon et al 2013 (mmol N mmol C-1)
+		//Qmin[i]   = 0.14*pow(sizep[i],-0.04);                     //Marañon et al 2013 (mmol N mmol C-1)
+		Qmin[i]   = 0.18*pow(sizep[i],-0.04);                     //Marañon et al 2013 (mmol N mmol C-1) -- Adapted (value used in the study)
 		K[i]      = 0.15*pow(sizep[i],0.33);                      //Edward et al 2010  (mmol m-3)
 		for(j=0; j<Spaceres; j++)
 		{
